@@ -26,6 +26,8 @@ public class Ball {
 
     private double maxY;
 
+    private boolean gameOver;
+
     public Ball(double maxY) {
         this.rect =  new Rectangle(0, 10, 10, 10);
         this.toRight = true;
@@ -47,6 +49,14 @@ public class Ball {
 
     public double getHeight() {
         return rect.getHeight();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 
     /**

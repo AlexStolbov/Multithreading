@@ -21,13 +21,16 @@ public class GamerRight implements Runnable {
     public void run() {
         Rectangle curr = ball.getRect();
         while (true) {
+            if (ball.isGameOver()) {
+                return;
+            }
             if (curr.getX() == this.limitX - ball.getHeight()) {
                 ball.move(false);
             }
             try {
                 Thread.sleep(40);
             } catch (InterruptedException e) {
-                return;
+                e.printStackTrace();
             }
         }
     }

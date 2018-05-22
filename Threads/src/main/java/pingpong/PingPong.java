@@ -16,13 +16,17 @@ public class PingPong extends Application {
         Group group = new Group();
         Ball ball = new Ball(limitY);
         group.getChildren().add(ball.getRect());
-        new Thread(new RectangleMove(ball, limitX, limitY)).start();
-        new Thread(new GamerLeft(ball, limitX, limitY)).start();
-        new Thread(new GamerRight(ball, limitX, limitY)).start();
+        Thread move = new Thread(new RectangleMove(ball, limitX, limitY));
+        Thread gamerLeft = new Thread(new GamerLeft(ball, limitX, limitY));
+        Thread gamerRight = new Thread(new GamerRight(ball, limitX, limitY));
+        move.start();
+        gamerLeft.start();
+        gamerRight.start();
         stage.setScene(new Scene(group, limitX, limitY));
         stage.setTitle(JOB4J);
         stage.setResizable(false);
         stage.show();
+        stage.setOnCloseRequest(event -> ball.setGameOver(true));
     }
 
     public static void main(String[] args) {
