@@ -18,9 +18,10 @@ public class RectangleMove implements Runnable {
      */
     @Override
     public void run() {
+        boolean exit = false;
         while (true) {
-            if (ball.isGameOver()) {
-                return;
+            if (Thread.interrupted()) {
+                exit = true;
             }
             if (!(ball.getRect().getX() == 0.0 || (ball.getRect().getX() == this.limitX - ball.getHeight()))) {
                 newPos(this.ball);
@@ -28,7 +29,10 @@ public class RectangleMove implements Runnable {
             try {
                 Thread.sleep(40);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                exit = true;
+            }
+            if (exit) {
+                return;
             }
         }
     }

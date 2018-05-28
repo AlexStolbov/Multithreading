@@ -19,7 +19,7 @@ public class RectangleMoveTest {
             return;
         }
         assertThat(ball.getRect().getX(), is(0.0));
-        ball.setGameOver(true);
+        move.interrupt();
     }
 
     @Test
@@ -37,7 +37,7 @@ public class RectangleMoveTest {
             return;
         }
         assertThat(ball.getRect().getX(), is((double) limitX - 10));
-        ball.setGameOver(true);
+        move.interrupt();
     }
 
 }

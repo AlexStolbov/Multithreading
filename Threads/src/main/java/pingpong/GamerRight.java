@@ -20,9 +20,10 @@ public class GamerRight implements Runnable {
     @Override
     public void run() {
         Rectangle curr = ball.getRect();
+        boolean exit = false;
         while (true) {
-            if (ball.isGameOver()) {
-                return;
+            if (Thread.interrupted()) {
+                exit = true;
             }
             if (curr.getX() == this.limitX - ball.getHeight()) {
                 ball.move(false);
@@ -30,7 +31,10 @@ public class GamerRight implements Runnable {
             try {
                 Thread.sleep(40);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                exit = true;
+            }
+            if (exit) {
+                return;
             }
         }
     }

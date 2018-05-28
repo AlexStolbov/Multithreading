@@ -26,7 +26,13 @@ public class PingPong extends Application {
         stage.setTitle(JOB4J);
         stage.setResizable(false);
         stage.show();
-        stage.setOnCloseRequest(event -> ball.setGameOver(true));
+        stage.setOnCloseRequest(event -> gameOver(move, gamerLeft, gamerRight));
+    }
+
+    private void gameOver(Thread... threads) {
+        for (Thread th : threads) {
+            th.interrupt();
+        }
     }
 
     public static void main(String[] args) {

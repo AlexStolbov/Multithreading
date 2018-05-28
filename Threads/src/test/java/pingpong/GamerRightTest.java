@@ -22,6 +22,6 @@ public class GamerRightTest {
             return;
         }
         assertThat(ball.getRect().getX(), is(start - delta));
-        ball.setGameOver(true);
+        go.interrupt();
     }
 }
