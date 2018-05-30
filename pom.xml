@@ -11,6 +11,7 @@
 
     <modules>
         <module>Threads</module>
+        <module>JMM</module>
     </modules>
 
     <properties>
