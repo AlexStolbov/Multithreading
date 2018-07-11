@@ -21,7 +21,7 @@ public class UserStorageTest {
     }
 
     @Test
-    public void multi() throws InterruptedException{
+    public void multi() throws InterruptedException {
         int max = 10000;
         UserStorage storage = new UserStorage();
         User from = new User(1, max);

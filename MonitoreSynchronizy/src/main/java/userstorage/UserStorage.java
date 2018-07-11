@@ -35,17 +35,15 @@ public class UserStorage {
         return res;
     }
 
-    public boolean transfer(int fromId, int toId, int amount) {
-        synchronized (this) {
-            boolean res = false;
-            User from = storage.get(fromId);
-            User to = storage.get(toId);
-            if (from != null && to != null) {
-                from.setAmount(from.getAmount() - amount);
-                to.setAmount(to.getAmount() + amount);
-                res = true;
-            }
-            return res;
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
+        boolean res = false;
+        User from = storage.get(fromId);
+        User to = storage.get(toId);
+        if (from != null && to != null) {
+            from.setAmount(from.getAmount() - amount);
+            to.setAmount(to.getAmount() + amount);
+            res = true;
         }
+        return res;
     }
 }
