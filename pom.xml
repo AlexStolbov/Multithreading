@@ -13,6 +13,7 @@
         <module>Threads</module>
         <module>JMM</module>
         <module>MonitoreSynchronizy</module>
+        <module>WaitNotifyNotifyAll</module>
     </modules>
 
     <properties>
