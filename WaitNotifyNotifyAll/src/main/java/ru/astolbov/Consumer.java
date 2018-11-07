@@ -1,43 +1,37 @@
 package ru.astolbov;
 
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Consumer<T> implements Runnable {
     private final SimpleBlockingQueue<T> queue;
-    private int pooledElements = 0;
+    private final List<T> destArray = new ArrayList<>();
+    private int countElements;
 
-    public Consumer(SimpleBlockingQueue<T> queue) {
+    public Consumer(SimpleBlockingQueue<T> queue, int countElements) {
         this.queue = queue;
+        this.countElements = countElements;
     }
 
-    public T poll() throws InterruptedException {
-        synchronized (queue) {
-            while (queue.isEmpty()) {
-                System.out.println("consumer wait");
-                queue.wait();
-            }
-            T res = queue.poll();
-            pooledElements++;
-            queue.notify();
-            return res;
-        }
+    public void poll() throws InterruptedException {
+        T res = queue.poll();
+        destArray.add(res);
     }
 
     @Override
     public void run() {
-        int i = 0;
-        while (true) {
-            testWait(i++);
+        for (int i = 0; i < this.countElements; i++) {
+            testWait(i);
             try {
                 poll();
             } catch (InterruptedException e) {
-                System.out.println("consumer interrupted");
+                //
             }
         }
     }
 
-    public int getPooledElements() {
-        return pooledElements;
+    public List<T> getDestArray() {
+        return destArray;
     }
 
     private void testWait(int i) {

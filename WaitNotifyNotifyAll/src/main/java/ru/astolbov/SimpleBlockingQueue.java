@@ -19,22 +19,35 @@ public class SimpleBlockingQueue<T> {
      * Add element into queue.
      * @param value - added element.
      */
-    public synchronized boolean offer(T value) {
-        boolean res = false;
-        if (this.queue.size() < this.maxSize) {
-            this.queue.add(value);
-            res = true;
+    public synchronized void offer(T value) {
+        while (isFull()) {
+            try {
+                System.out.println("---------- offer wait");
+                wait();
+            } catch (InterruptedException e) {
+                //
+            }
         }
-        return res;
+        this.queue.add(value);
+        System.out.println("offer " + value);
+        notify();
     }
 
     /**
      * Return last added element from queue.
-     * @return element from queue.
      */
     public synchronized T poll() {
-        //System.out.println("poll " + this.queue.size());
-        return this.queue.poll();
+        while (isEmpty()) {
+            try {
+                System.out.println("-------- polling wait");
+                wait();
+            } catch (InterruptedException e) {
+                //
+            }
+        }
+        T res = this.queue.poll();
+        notify();
+        return res;
     }
 
     /**

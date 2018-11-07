@@ -12,26 +12,15 @@ public class Producer<T> implements Runnable {
         this.source = source;
     }
 
-    public void offer(T value) throws InterruptedException {
-        synchronized (queue) {
-            while (queue.isFull()) {
-                System.out.println("producer wait");
-                queue.wait();
-            }
+    public void offer(T value){
             queue.offer(value);
-            queue.notify();
-        }
     }
 
     public void run() {
         for (int i = 0; i <= source.size() - 1; i++) {
             testWait(i);
-            try {
-                offer(source.get(i));
-                countOffers++;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            offer(source.get(i));
+            countOffers++;
         }
     }
 
@@ -41,12 +30,12 @@ public class Producer<T> implements Runnable {
 
     private void testWait(int i) {
         if (i % 25 == 0) {
-            try {
-                synchronized (this) {
+            synchronized (this) {
+                try {
                     wait(100);
+                } catch (InterruptedException e) {
+                    //
                 }
-            } catch (InterruptedException e) {
-                System.out.println("producer interrupted");
             }
         }
     }

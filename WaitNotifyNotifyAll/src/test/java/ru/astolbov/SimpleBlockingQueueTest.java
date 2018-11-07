@@ -18,15 +18,17 @@ public class SimpleBlockingQueueTest {
             source.add(i);
         }
         Producer<Integer> producer = new Producer<>(queue, source);
-        Consumer<Integer> consumer = new Consumer<>(queue);
+        Consumer<Integer> consumer = new Consumer<>(queue, source.size());
         Thread producerThread = new Thread(producer);
         Thread consumerThread = new Thread(consumer);
+
         consumerThread.start();
         producerThread.start();
+
         producerThread.join();
-        consumerThread.interrupt();
+        consumerThread.join();
 
         assertThat(producer.getCountOffers(), is(source.size()));
-        assertThat(consumer.getPooledElements(), is(source.size()));
+        assertThat(consumer.getDestArray(), is(source));
     }
 }
