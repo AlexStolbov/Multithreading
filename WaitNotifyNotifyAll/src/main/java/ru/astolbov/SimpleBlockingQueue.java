@@ -9,7 +9,7 @@ import java.util.Queue;
 @ThreadSafe
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
-    private Queue<T> queue = new LinkedList<>();
+    private final Queue<T> queue = new LinkedList<>();
     /**
      * Max count of elements in queue;
      */
@@ -36,13 +36,13 @@ public class SimpleBlockingQueue<T> {
     /**
      * Return last added element from queue.
      */
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException{
         while (isEmpty()) {
             try {
                 System.out.println("-------- polling wait");
                 wait();
             } catch (InterruptedException e) {
-                //
+                throw new InterruptedException();
             }
         }
         T res = this.queue.poll();
