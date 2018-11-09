@@ -46,6 +46,7 @@ public class SimpleBlockingQueue<T> {
             }
         }
         T res = this.queue.poll();
+        System.out.println("poll " + res);
         notify();
         return res;
     }

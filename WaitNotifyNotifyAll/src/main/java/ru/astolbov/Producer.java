@@ -30,12 +30,10 @@ public class Producer<T> implements Runnable {
 
     private void testWait(int i) {
         if (i % 25 == 0) {
-            synchronized (this) {
-                try {
-                    wait(100);
-                } catch (InterruptedException e) {
-                    //
-                }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }

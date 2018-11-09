@@ -6,11 +6,9 @@ import java.util.List;
 public class Consumer<T> implements Runnable {
     private final SimpleBlockingQueue<T> queue;
     private final List<T> destArray = new ArrayList<>();
-    private int countElements;
 
-    public Consumer(SimpleBlockingQueue<T> queue, int countElements) {
+    public Consumer(SimpleBlockingQueue<T> queue) {
         this.queue = queue;
-        this.countElements = countElements;
     }
 
     public void poll() throws InterruptedException {
@@ -20,12 +18,13 @@ public class Consumer<T> implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < this.countElements; i++) {
-            testWait(i);
+        int i = 0;
+        while (!(queue.isEmpty() & Thread.currentThread().isInterrupted())) {
+            testWait(i++);
             try {
                 poll();
             } catch (InterruptedException e) {
-                //
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -34,14 +33,12 @@ public class Consumer<T> implements Runnable {
         return destArray;
     }
 
-    private void testWait(int i) {
+    private void testWait (int i) {
         if (i % 20 == 0) {
             try {
-                synchronized (this) {
-                    wait(100);
-                }
+                Thread.sleep(100);
             } catch (InterruptedException e) {
-                System.out.println("consumer interrupted");
+                Thread.currentThread().interrupt();
             }
         }
     }
